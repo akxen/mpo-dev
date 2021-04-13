@@ -1,0 +1,9 @@
+version: "3.7"
+
+services:
+  solver_api:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - "config/secret.env"
