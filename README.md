@@ -142,25 +142,81 @@ This produces the following output:
 
 The model computes normalised portfolio weights that should be observed at the start of each period, along with normalised trade that realise these weights. Weights in the first period are fixed to values contained within `"initial_weights"`. A terminal constraint enforces non-cash assets be liquidated in the final period. The optimisation problem seeks to identify the plan of investment decisions that maximises the portfolio's value over the investment horizon. Only the first step in the plan would be implemented in practice, with the procedure repeated at the start of each interval using updated forecasts. This pattern of periodically developing a plan but only implementing the first step falls within the paradigm of model predictive control, also known as receding horizon control.
 
+## Model data
 
-## Extending the model
-The example above only considers two stocks and a cash account. More stocks can be considered by adding them to the request body - users must specify the initial weight, and the estimated returns to be observed over the planning horizon. Similarly, more than three periods can be considered by extending the JSON object containing return estimates. For example, to consider four periods the estimates object becomes:
+### Initial weights
+A cash account (denoted `"CASH"`) must always be included within the `"initial_weights"` object. Initial weights for each asset must sum to 1.
+
+```
+"initial_weights": {
+    "GOOG": 0,
+    "APPL": 0,
+    "CASH": 1
+}
+```
+
+### Return estimates
+Forecast returns for each period over the model horizon must be provided for each asset. If three periods are specified then following should be submitted:
 
 ```
 "estimated_returns": {
     "GOOG": {
         "1": 0.05,
         "2": 0.02,
-        "3": -0.1,
-        "4": 0.05
+        "3": -0.1
+    },
+    "APPL": {
+        "1": 0.04,
+        "2": 0.01,
+        "3": -0.03
+    }
+```
+
+If four periods are specified then an additional forecast is required for each asset:
+
+```
+"estimated_returns": {
+    "GOOG": {
+        "1": 0.05,
+        "2": 0.02,
+        "3": -0.1
+        "4": 0.01
+    },
+    "APPL": {
+        "1": 0.04,
+        "2": 0.01,
+        "3": -0.03
+        "4": -0.01
+    }
+```
+
+### Adding more assets
+The `"initial_weights"` and `"estimated_returns"` objects must be updated when adding assets. For instance, consider adding AMZN. First update the `"initial weights"` object:
+
+```
+"initial_weights": {
+    "AMZN": 0,
+    "GOOG": 0,
+    "APPL": 0,
+    "CASH": 1
+}
+```
+then include an object for the asset's estimated returns over the model horizon:
+
+```
+"estimated_returns": {
+    "AMZN": {
+        "1": 0.01,
+        "2": 0.04,
+        "3": -0.05
+        "4": 0.03
     },
     ...
 }
 ```
 
-A cash account (denoted `"CASH"`) must always be included within the `"initial_weights"` object. Initial weights for each asset must sum to 1.
 
-## Parameters
+### Parameters
 The following parameters impact the model's formulation:
 
 | Parameter | Description | Default |
@@ -176,13 +232,12 @@ The following parameters impact the model's formulation:
 Defaults can be overridden by specifying these parameters in the request body as shown in the example above.
 
 ## Solution status
-A status code is returned with the model solution to indicate if the model was solved to optimality. The following `"status"` codes may be observed:
+A code is returned to indicate if the model was solved to optimality. The following `"status"` codes may be observed:
 
 | Status code | Description |
 | ----------- | ----------- |
 | 0 | Optimal solution obtained |
 | 1 | Model is infeasible or suboptimal solution returned |
-
 
 ## Caveats
 1. THIS MODEL IS NOT INTENDED FOR USE IN PRODUCTION.
