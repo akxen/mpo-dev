@@ -5,7 +5,7 @@ Boyd, S., Busseti, E., Diamond, S., Kahn, R. N., Koh, K., Nystrup, P., & Speth, 
 
 Link: https://stanford.edu/~boyd/papers/pdf/cvx_portfolio.pdf
 
-Pyomo is used to formulate the optimisation problem while GLPK is used as the solver. Users interact with the model via an API which has been created using Django REST Framework. This approach decouples the technology used to formulate and solve the model from the method by which data is submitted to the model. Any tool or programming language capable of submitting POST requests can be used to interact with the model via the API.
+Pyomo is used to formulate the optimisation problem while GLPK is used as the solver. Users interact with the model via an API which has been created using the Django REST Framework. This approach decouples the technology used to formulate and solve the model from the method by which data is submitted to the model. Any tool or programming language capable of submitting POST requests can be used to interact with the model via the API.
 
 The model used by the API can be found in [project/api/optimisation/model.py](project/api/optimisation/model.py).
 
@@ -157,6 +157,8 @@ The example above only considers two stocks and a cash account. More stocks can 
     ...
 }
 ```
+
+A cash account (denoted `"CASH"`) must always be included within the `"initial_weights"` object. Initial weights for each asset must sum to 1.
 
 ## Parameters
 The following parameters impact the model's formulation:
