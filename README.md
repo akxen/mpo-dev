@@ -140,7 +140,9 @@ This produces the following output:
 }
 ```
 
-The model computes normalised portfolio weights that should be observed at the start of each period, along with normalised trade that realise these weights. Weights in the first period are fixed to values contained within `"initial_weights"`. A terminal constraint enforces non-cash assets be liquidated in the final period. The optimisation problem seeks to identify the plan of investment decisions that maximises the portfolio's value over the investment horizon. Only the first step in the plan would be implemented in practice, with the procedure repeated at the start of each interval using updated forecasts. This pattern of periodically developing a plan but only implementing the first step falls within the paradigm of model predictive control, also known as receding horizon control.
+The model computes normalised portfolio weights that should be observed at the start of each period, along with normalised trade that realise these weights. Weights in the first period are fixed to values contained within `"initial_weights"`. A terminal constraint enforces non-cash assets be liquidated in the final period.
+
+The optimisation problem seeks to identify the plan of investment decisions that maximises the portfolio's value over the investment horizon. Only the first step in the plan would be implemented in practice, with the procedure repeated at the start of each interval using updated forecasts. This pattern of periodically developing a plan but only implementing the first step falls within the paradigm of model predictive control, also known as receding horizon control.
 
 ## Model data
 
@@ -155,7 +157,7 @@ A cash account (denoted `"CASH"`) must always be included within the `"initial_w
 }
 ```
 
-### Return estimates
+### Asset return forecasts
 Forecast returns for each period over the model horizon must be provided for each asset. If three periods are specified then following should be submitted:
 
 ```
@@ -172,7 +174,7 @@ Forecast returns for each period over the model horizon must be provided for eac
     }
 ```
 
-If four periods are specified then an additional forecast is required for each asset:
+If the model horizon is to consist of four periods then an additional forecast is required for each asset:
 
 ```
 "estimated_returns": {
@@ -190,7 +192,9 @@ If four periods are specified then an additional forecast is required for each a
     }
 ```
 
-### Adding more assets
+All assets should specify the same number of forecast periods.
+
+### Adding assets
 The `"initial_weights"` and `"estimated_returns"` objects must be updated when adding assets. For instance, consider adding AMZN. First update the `"initial weights"` object:
 
 ```
