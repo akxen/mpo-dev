@@ -1,5 +1,5 @@
 # Multi-period Porfolio Optimisation API
-This repository implements a version of the multi-period portfolio optimisation (MPO) algorithm presented in:
+This repository implements a version of the multi-period portfolio optimisation algorithm presented in:
 
 Boyd, S., Busseti, E., Diamond, S., Kahn, R. N., Koh, K., Nystrup, P., & Speth, J. (2017). Multi-period trading via convex optimization. arXiv preprint arXiv:1705.00109.
 
@@ -7,10 +7,10 @@ Link: https://stanford.edu/~boyd/papers/pdf/cvx_portfolio.pdf
 
 Pyomo is used to formulate the optimisation problem while GLPK is used as the solver. Users interact with the model via an API which has been created using Django REST Framework. This approach decouples the technology used to formulate and solve the model from the method by which data is submitted to the model. Any tool or programming language capable of submitting POST requests can be used to interact with the model via the API.
 
-The MPO model used by the API can be found in `project/api/optimisation/model.py`.
+The model used by the API can be found in [project/api/optimisation/model.py](project/api/optimisation/model.py).
 
 ## Quickstart
-Setup the configuration file by following instructions in `config/secret-template.env`
+Setup the configuration file by following instructions in [config/secret-template.env](config/secret-template.env)
 
 
 Run docker-compose to start the container:
@@ -173,10 +173,18 @@ The following parameters impact the model's formulation:
 
 Defaults can be overridden by specifying these parameters in the request body as shown in the example above.
 
+## Solution status
+A status code is returned with the model solution to indicate if the model was solved to optimality. The following `"status"` codes may be observed:
+
+| Status code | Description |
+| ----------- | ----------- |
+| 0 | Optimal solution obtained |
+| 1 | Model is infeasible or suboptimal solution returned |
+
 
 ## Caveats
 1. THIS MODEL IS NOT INTENDED FOR USE IN PRODUCTION.
 
-2. This is not a full implementation of the model described in the reference listed above. For example, risk measures are not included in the objective and holding costs are omitted. A simplified transaction cost model has also been used. The model in `project/api/optimisation/model.py` can be easily extended to suit different use cases and requirements.
+2. This is not a full implementation of the model described in the reference listed above. For example, risk measures are not included in the objective and holding costs are omitted. A simplified transaction cost model has also been used. The model in [project/api/optimisation/model.py](project/api/optimisation/model.py) can be extended to suit different use cases and requirements.
 
 3. Djano is configured for local development (i.e. `manage.py runserver` is used, and `DEBUG=True`).
