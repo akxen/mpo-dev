@@ -140,7 +140,7 @@ This produces the following output:
 }
 ```
 
-The model computes normalised portfolio weights that should be observed at the start of each period, along with normalised trade that realise these weights. Weights in the first period are fixed to values contained within `"initial_weights"`. A terminal constraint enforces non-cash assets be liquidated in the final period.
+The model computes normalised portfolio weights that should be observed at the start of each period, along with normalised trades that realise these weights. Weights in the first period are fixed to values contained within `"initial_weights"`. A terminal constraint enforces non-cash assets be liquidated in the final period.
 
 The optimisation problem seeks to identify the plan of investment decisions that maximises the portfolio's value over the investment horizon. Only the first step in the plan would be implemented in practice, with the procedure repeated at the start of each interval using updated forecasts. This pattern of periodically developing a plan but only implementing the first step falls within the paradigm of model predictive control, also known as receding horizon control.
 
